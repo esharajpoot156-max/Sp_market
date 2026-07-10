@@ -2,9 +2,9 @@ import nodemailer from "nodemailer";
 
 const sendEmail = async ({ to, subject, html }) => {
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST, // e.g. smtp-relay.brevo.com
-    port: Number(process.env.SMTP_PORT) || 587,
-    secure: false,
+    host: process.env.SMTP_HOST,
+    port: 465,
+    secure: true, // true for port 465
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
@@ -12,6 +12,7 @@ const sendEmail = async ({ to, subject, html }) => {
     connectionTimeout: 15000,
     greetingTimeout: 15000,
     socketTimeout: 15000,
+    family: 4, // force IPv4 - Railway/Brevo IPv6 issue fix
   });
 
   await transporter.sendMail({
