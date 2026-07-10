@@ -88,6 +88,7 @@ const Chat = () => {
 
       <div className="flex-1 overflow-y-auto px-6 py-6 max-w-2xl w-full mx-auto space-y-3">
         {messages.map((msg) => {
+          const senderId = msg.senderId?._id || msg.senderId;
           const isMine = msg.senderId._id === user._id || msg.senderId === user._id;
           return (
             <motion.div

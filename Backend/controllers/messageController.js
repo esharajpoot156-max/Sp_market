@@ -35,6 +35,7 @@ export const getMyConversations = async (req, res, next) => {
     // Group by conversationId, keep only latest message per conversation
     const conversationsMap = new Map();
     for (const msg of messages) {
+      if (!msg.senderId || !msg.receiverId) continue; 
       if (!conversationsMap.has(msg.conversationId)) {
         const otherUser =
           msg.senderId._id.toString() === userId.toString() ? msg.receiverId : msg.senderId;
