@@ -1,0 +1,83 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary: #E8291C;
+  --color-primary-dark: #B91D12;
+  --color-secondary: #14141F;
+  --color-ink: #0B0B14;
+  --color-accent: #FFD9CE;
+  --color-bg: #F3F4F8;
+  --color-surface: #FFFFFF;
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  margin: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ===== Dark mode — softer, warmer, more polished ===== */
+.dark body {
+  background-color: #1A1720;
+  color: #E8E3DE;
+}
+
+.dark .bg-bg {
+  background-color: #1A1720 !important;
+}
+
+.dark .bg-surface,
+.dark .bg-white {
+  background-color: #24202B !important;
+}
+
+.dark .text-secondary {
+  color: #E8E3DE !important;
+}
+
+.dark .text-secondary\/50,
+.dark .text-secondary\/60,
+.dark .text-secondary\/70,
+.dark .text-secondary\/80 {
+  color: rgba(232, 227, 222, 0.55) !important;
+}
+
+.dark .text-secondary\/40,
+.dark .text-secondary\/30 {
+  color: rgba(232, 227, 222, 0.35) !important;
+}
+
+.dark .border-secondary\/10,
+.dark .border-secondary\/20 {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark .bg-secondary\/5,
+.dark .bg-secondary\/10 {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+.dark .bg-accent\/40 {
+  background-color: rgba(232, 41, 28, 0.12) !important;
+}
+
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: #2C2735;
+  color: #E8E3DE;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: rgba(232, 227, 222, 0.35);
+}
+
+.dark .shadow-sm,
+.dark .shadow-md {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35) !important;
+}
