@@ -72,12 +72,12 @@ export const loginUser = async (req, res, next) => {
     if (user.isSuspended) {
       return res.status(403).json({ message: "Your account has been suspended" });
     }
-    if (!user.isVerified) {
-      return res.status(403).json({
-        message: "Please verify your email before logging in",
-        needsVerification: true,
-      });
-    }
+    // if (!user.isVerified) {
+    //   return res.status(403).json({
+    //     message: "Please verify your email before logging in",
+    //     needsVerification: true,
+    //   });
+    // }
     res.status(200).json({
       _id: user._id,
       name: user.name,
