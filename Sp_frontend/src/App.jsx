@@ -28,7 +28,7 @@ import Profile from "./pages/Profile";
 import { ThemeProvider } from "./context/ThemeContext";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
-
+import Footer from "./components/Footer";
 
 
 
@@ -69,6 +69,7 @@ function App() {
             <Route path="/reset-password/:token" element={<ResetPassword />} />
 
           </Routes>
+          <Footer />
         </BrowserRouter>
       </SocketProvider>
     </AuthProvider>

@@ -37,8 +37,7 @@ const Home = () => {
       {/* Hero with 3D perspective */}
       <div
       className="bg-secondary dark:bg-gradient-to-br dark:from-[#1F1B29] dark:to-[#2A1A1F] px-6 py-20 text-center overflow-hidden border-b border-white/5 dark:border-primary/10"
-      style={{ perspective: "1000px" }}
->
+      style={{ perspective: "1000px" }}>
         <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight" style={{ transformStyle: "preserve-3d" }}>
           <AnimatedText text="Buy, sell, and get things done" delayStart={0.1} />
           <br />
