@@ -17,8 +17,9 @@ const sendEmail = async ({ to, subject, html }) => {
         },
       }
     );
+    console.log("✅ Email sent via Brevo API to:", to);
   } catch (error) {
-    console.error("Brevo API email error:", error.response?.data || error.message);
+    console.error("🔴 Brevo API email error:", error.response?.data || error.message);
     throw error;
   }
 };
