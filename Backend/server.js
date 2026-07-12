@@ -18,7 +18,7 @@ import reviewRoutes from "./routes/reviewRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
-
+import orderRoutes from "./routes/orderRoutes.js";
 dotenv.config();
 connectDB();
 
@@ -43,6 +43,7 @@ app.use("/api/reviews", reviewRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/orders",orderRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
