@@ -12,11 +12,9 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [activeImg, setActiveImg] = useState(0);
   const [loading, setLoading] = useState(true);
-  //add order state
   const [showOrder, setShowOrder] = useState(false);
   const [order, setOrder] = useState({ quantity: 1, city: "", details: "", notes: "" });
   const [submitting, setSubmitting] = useState(false);
-
 
   useEffect(() => {
     api
@@ -33,7 +31,7 @@ const ProductDetail = () => {
     }
     navigate(`/chat/${product.sellerId._id}`);
   };
-  // Handle order submission
+
   const handleOrderSubmit = async (e) => {
     e.preventDefault();
     if (!user) {
@@ -59,15 +57,15 @@ const ProductDetail = () => {
     }
   };
 
-  if (loading) return <p className="text-center py-16 text-secondary/50">Loading...</p>;
-  if (!product) return <p className="text-center py-16 text-secondary/50">Product not found.</p>;
+  if (loading) return <p className="text-center py-16 text-secondary/50 dark:text-white/50">Loading...</p>;
+  if (!product) return <p className="text-center py-16 text-secondary/50 dark:text-white/50">Product not found.</p>;
 
   return (
-    <div className="bg-bg min-h-[calc(100vh-72px)] px-6 py-8">
+    <div className="bg-bg dark:bg-ink min-h-[calc(100vh-72px)] px-6 py-8 transition-colors">
       <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-10">
         {/* Images */}
         <div>
-          <div className="aspect-square bg-white rounded-xl overflow-hidden border border-secondary/10 mb-3">
+          <div className="aspect-square bg-surface dark:bg-secondary/60 rounded-xl overflow-hidden border border-secondary/10 dark:border-white/10 mb-3">
             {product.images?.length > 0 ? (
               <img
                 src={product.images[activeImg]}
@@ -75,7 +73,7 @@ const ProductDetail = () => {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-secondary/30">
+              <div className="w-full h-full flex items-center justify-center text-secondary/30 dark:text-white/30">
                 No image
               </div>
             )}
@@ -99,18 +97,23 @@ const ProductDetail = () => {
 
         {/* Details */}
         <div>
-          <h1 className="text-2xl font-bold text-secondary mb-2">{product.title}</h1>
+          <h1 className="text-2xl font-bold text-secondary dark:text-white mb-2">{product.title}</h1>
           <p className="text-3xl font-bold text-primary mb-4">
             Rs. {product.price?.toLocaleString()}
           </p>
 
-          <div className="flex items-center gap-4 text-sm text-secondary/60 mb-6">
+          <div className="flex items-center gap-4 text-sm text-secondary/60 dark:text-white/50 mb-6 flex-wrap">
             <span className="flex items-center gap-1">
               <FaMapMarkerAlt size={12} /> {product.location?.city || "N/A"}
             </span>
             <span className="capitalize px-2 py-0.5 bg-accent/40 rounded-full text-xs">
               {product.condition}
             </span>
+            {product.isSold && (
+              <span className="px-2 py-0.5 bg-secondary/10 dark:bg-white/10 rounded-full text-xs">
+                Sold
+              </span>
+            )}
             {product.rating?.count > 0 && (
               <span className="flex items-center gap-1">
                 <FaStar className="text-accent" size={12} />
@@ -119,9 +122,9 @@ const ProductDetail = () => {
             )}
           </div>
 
-          <p className="text-secondary/80 leading-relaxed mb-6">{product.description}</p>
+          <p className="text-secondary/80 dark:text-white/70 leading-relaxed mb-6">{product.description}</p>
 
-          <div className="flex items-center gap-3 p-4 bg-white rounded-xl border border-secondary/10 mb-6">
+          <div className="flex items-center gap-3 p-4 bg-surface dark:bg-secondary/60 rounded-xl border border-secondary/10 dark:border-white/10 mb-6">
             {product.sellerId?.profilePicture ? (
               <img
                 src={product.sellerId.profilePicture}
@@ -129,22 +132,31 @@ const ProductDetail = () => {
                 alt=""
               />
             ) : (
-              <div className="w-10 h-10 rounded-full bg-secondary/20" />
+              <div className="w-10 h-10 rounded-full bg-secondary/20 dark:bg-white/10" />
             )}
             <div>
-              <p className="font-medium text-secondary text-sm">{product.sellerId?.name}</p>
-              <p className="text-xs text-secondary/50">Seller</p>
+              <p className="font-medium text-secondary dark:text-white text-sm">{product.sellerId?.name}</p>
+              <p className="text-xs text-secondary/50 dark:text-white/40">Seller</p>
             </div>
           </div>
 
-          <button
-            onClick={handleMessageSeller}
-            className="w-full bg-primary hover:bg-primary-dark text-white font-medium py-3 rounded-lg transition"
-          >
-            Message Seller
-          </button>
-        </div>
-                  {/* Order form */}
+          <div className="flex gap-3">
+            <button
+              onClick={() => setShowOrder(true)}
+              disabled={product.isSold}
+              className="flex-1 bg-primary hover:bg-primary-dark text-white font-medium py-3 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {product.isSold ? "Sold Out" : "Buy Now"}
+            </button>
+            <button
+              onClick={handleMessageSeller}
+              className="flex-1 border border-secondary/20 dark:border-white/20 hover:bg-secondary/5 dark:hover:bg-white/5 text-secondary dark:text-white font-medium py-3 rounded-lg transition"
+            >
+              Message Seller
+            </button>
+          </div>
+
+          {/* Order form */}
           {showOrder && (
             <form
               onSubmit={handleOrderSubmit}
@@ -204,9 +216,9 @@ const ProductDetail = () => {
               </button>
             </form>
           )}
-    
+        </div>
+      </div>
     </div>
-  </div>
   );
 };
 
