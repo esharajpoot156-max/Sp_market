@@ -12,6 +12,11 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [activeImg, setActiveImg] = useState(0);
   const [loading, setLoading] = useState(true);
+  //add order state
+  const [showOrder, setShowOrder] = useState(false);
+  const [order, setOrder] = useState({ quantity: 1, city: "", details: "", notes: "" });
+  const [submitting, setSubmitting] = useState(false);
+
 
   useEffect(() => {
     api
@@ -27,6 +32,31 @@ const ProductDetail = () => {
       return navigate("/login");
     }
     navigate(`/chat/${product.sellerId._id}`);
+  };
+  // Handle order submission
+  const handleOrderSubmit = async (e) => {
+    e.preventDefault();
+    if (!user) {
+      toast.error("Please log in to buy this product");
+      return navigate("/login");
+    }
+    setSubmitting(true);
+    try {
+      await api.post("/orders", {
+        productId: id,
+        quantity: order.quantity,
+        city: order.city,
+        details: order.details,
+        notes: order.notes,
+      });
+      toast.success("Order request sent to seller!");
+      setShowOrder(false);
+      navigate("/dashboard/orders");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Order failed");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (loading) return <p className="text-center py-16 text-secondary/50">Loading...</p>;
@@ -114,8 +144,69 @@ const ProductDetail = () => {
             Message Seller
           </button>
         </div>
-      </div>
+                  {/* Order form */}
+          {showOrder && (
+            <form
+              onSubmit={handleOrderSubmit}
+              className="mt-6 p-5 bg-surface dark:bg-secondary/60 rounded-xl border border-secondary/10 dark:border-white/10 space-y-4"
+            >
+              <h3 className="font-bold text-secondary dark:text-white">Confirm your order</h3>
+
+              <div>
+                <label className="block text-xs font-medium text-secondary dark:text-white/70 mb-1">Quantity</label>
+                <input
+                  type="number"
+                  min={1}
+                  value={order.quantity}
+                  onChange={(e) => setOrder({ ...order, quantity: Number(e.target.value) })}
+                  className="w-full px-3 py-2 rounded-lg border border-secondary/20 dark:border-white/20 dark:bg-secondary/40 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-secondary dark:text-white/70 mb-1">Delivery city</label>
+                <input
+                  type="text"
+                  required
+                  value={order.city}
+                  onChange={(e) => setOrder({ ...order, city: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg border border-secondary/20 dark:border-white/20 dark:bg-secondary/40 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-secondary dark:text-white/70 mb-1">Address details</label>
+                <textarea
+                  rows={2}
+                  value={order.details}
+                  onChange={(e) => setOrder({ ...order, details: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg border border-secondary/20 dark:border-white/20 dark:bg-secondary/40 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  placeholder="House #, street, area..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-secondary dark:text-white/70 mb-1">Notes (optional)</label>
+                <textarea
+                  rows={2}
+                  value={order.notes}
+                  onChange={(e) => setOrder({ ...order, notes: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg border border-secondary/20 dark:border-white/20 dark:bg-secondary/40 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full bg-primary hover:bg-primary-dark text-white font-medium py-2.5 rounded-lg transition disabled:opacity-60"
+              >
+                {submitting ? "Sending request..." : "Confirm Order"}
+              </button>
+            </form>
+          )}
+    
     </div>
+  </div>
   );
 };
 
